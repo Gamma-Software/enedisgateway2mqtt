@@ -1,6 +1,5 @@
-version: '3.9'
+version: '3.7'
 services:
-  # Update this to the name of the service you want to work with in your docker-compose.yml file
   workspace:
     # If you want add a non-root user to your Dockerfile, you can use the "remoteUser"
     # property in devcontainer.json to cause VS Code its sub-processes (terminals, tasks,
@@ -17,12 +16,14 @@ services:
     # array). The sample below assumes your primary file is in the root of your project.
     #
     build: 
-      context: .
-      dockerfile: Dockerfile
+      context: ..
+      dockerfile: .devcontainer/Dockerfile
       args:
+        # 3, 3.10, 3.9, 3.8, 3.7, 3.6, 3-bullseye, 3.10-bullseye, 3.9-bullseye, 3.8-bullseye, 
+        # 3.7-bullseye, 3.6-bullseye, 3-buster, 3.10-buster, 3.9-buster, 3.8-buster, 3.7-buster, 3.6-buster
         VARIANT: 3-bullseye
 
-    entrypoint: /usr/local/share/docker-init.sh
+    # entrypoint: /usr/local/share/docker-init.sh
 
     volumes:
       # Update this to wherever you want VS Code to mount the folder of your project
@@ -45,7 +46,7 @@ services:
     ports:
       - '8086:8086'
     volumes:
-      - ./data/influxdb:/var/lib/influxdb2
+      - ../data/influxdb:/var/lib/influxdb2
     healthcheck:
       test: ["CMD", "curl", "-f", "http://influxdb:8086"]
       interval: 25s
@@ -67,8 +68,8 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
-      - ./data/mosquitto:/data
-      - ./mosquitto:/mosquitto/config/
+      - ../data/mosquitto:/data
+      - ../mosquitto:/mosquitto/config/
     ports:
       - 1883:1883
       - 9002:9001
@@ -80,6 +81,6 @@ services:
     links:
       - mosquitto
     volumes:
-      - ./data/:/mqtt-explorer/config
+      - ../data/:/mqtt-explorer/config
     ports:
       - 4000:4000
