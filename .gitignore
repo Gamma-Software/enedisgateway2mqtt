@@ -3,3 +3,4 @@
 /data/*
 /app/__pycache__/
 /tmp
+config.yaml
